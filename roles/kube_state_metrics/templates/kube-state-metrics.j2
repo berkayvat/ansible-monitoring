@@ -1,0 +1,13 @@
+kind: {{ kube_state_metrics['kind'] }}
+apiVersion: {{ kube_state_metrics['version'] }}
+metadata:
+  namespace: {{ kube_state_metrics['namespace'] }}
+  name: {{ kube_state_metrics['name'] }}
+spec:
+  selector:
+    k8s-app: {{ kube_state_metrics['selector'] }}
+  ports:
+    - protocol: {{ kube_state_metrics['protocol'] }}
+      port: {{ kube_state_metrics['port'] }}
+      nodePort: {{ kube_state_metrics['nodeport'] }}
+  type: {{ kube_state_metrics['type'] }}

@@ -1,0 +1,58 @@
+---
+# defaults file for compose_up
+  alertmanager:
+    resolve_timeout: 5m
+    smtp_auth_username: ""
+    smtp_require_tls: false
+    group_by: [alertname]
+    group_interval: 30s
+    repeat_interval: 10m
+    group_wait: 30s
+    receiver: 'prometheus-email'
+    name: 'prometheus-email'
+    to: 'berk.ayvat@inavitas.com'
+    from: 'prometheus@meram.com.tr'
+    require_tls: false
+    smarthost: 10.142.1.31:25
+    insecure_skip_verify: true
+    source_match_severity: 'critical'
+    target_match_severity: 'warning'
+    equal_alertname: 'alertname'
+    equal_dev: 'dev'
+    equal_instance: 'instance'
+
+  prometheus:
+    global_scrape_interval: 15s
+    monitor_name: 'my_monitor'
+    rule_file: /etc/prometheus/alert.rules.yml
+    job1_name: 'meram_node_exporter'
+    job1_scrape_interval: 5s
+    job1_scrape_timeout: 5s
+    target1: 172.16.140.40:9100
+    target2: 172.16.140.41:9100
+    target3: 172.16.140.42:9100
+    target4: 172.16.140.43:9100
+    target5: 172.16.140.44:9100
+    target6: 172.16.140.45:9100
+    target7: 172.16.140.46:9100
+    job2_name: 'kube-state-metrics'
+    job2_scrape_interval: 10s
+    job2_target1: ['172.16.140.40:31080']
+    alerting_target1: 172.16.42.40:9093
+    rw_url: "http://ec2-44-196-248-121.compute-1.amazonaws.com:9201/write"
+    rr_url: "http://ec2-44-196-248-121.compute-1.amazonaws.com:9201/read"
+    rr_read_recent: true
+
+  dockercompose:
+    prometheus_image: prom/prometheus
+    prometheus_volume1: ./confs/prometheus.yml:/etc/prometheus/prometheus.yml
+    prometheus_volume2: ./confs/alert.rules.yml:/etc/prometheus/alert.rules.yml
+    prometheus_command1: '--config.file=/etc/prometheus/prometheus.yml'
+    prometheus_ports: '9090:9090'
+    alertmanager_image: prom/alertmanager
+    alertmanager_volume1: ./confs/alertmanager.yml:/alertmanager.yml
+    alertmanager_command1: '--config.file=/alertmanager.yml'
+    alertmanager_ports: '9093:9093'
+    grafana_image: grafana/grafana-enterprise
+    grafana_ports: '3000:3000'
+    grafana_volume1: grafana-storage:/var/lib/grafana

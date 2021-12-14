@@ -1,0 +1,34 @@
+- name: update
+  hosts: remoteserver
+  become: true
+
+  roles:
+    - role: update
+
+- name: download_docker
+  hosts: remoteserver
+  become: true
+
+  roles:
+    - role: download_docker
+
+- name: download_node_exporter
+  hosts: remoteserver
+  become: true
+
+  roles:
+    - role: download_node_exporter
+
+- name: compose_up
+  hosts: remoteserver
+  become: true
+
+  roles:
+    - role: compose_up
+
+- name: deploy kube-state-metrics
+  hosts: remoteserver
+  become: true
+
+  roles:
+    - role: kube_state_metrics

@@ -1,0 +1,13 @@
+[Unit]
+Description= {{ node_exporter['description'] }}
+After= {{ node_exporter['after'] }}
+
+[Service]
+User= {{ node_exporter['user'] }}
+Group= {{ node_exporter['group'] }}
+Type= {{ node_exporter['type'] }}
+ExecStart=/usr/local/bin/node_exporter
+
+[Install]
+WantedBy=multi-user.target
+

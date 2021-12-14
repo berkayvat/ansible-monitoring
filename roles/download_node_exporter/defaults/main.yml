@@ -1,0 +1,8 @@
+---
+# defaults file for download_node_exporter
+  node_exporter:
+    description: Node Exporter
+    after: network.target
+    user: node_exporter
+    group: node_exporter
+    type: simple

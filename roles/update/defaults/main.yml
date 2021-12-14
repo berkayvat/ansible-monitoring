@@ -1,0 +1,6 @@
+---
+# defaults file for update
+#  remoteserver:
+#    host: 10.0.20.59
+#    user: ubuntu
+#    pass: 1234

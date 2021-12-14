@@ -1,0 +1,25 @@
+global:
+  resolve_timeout: {{ alertmanager['resolve_timeout'] }}
+  smtp_auth_username: {{ alertmanager['smtp_auth_username'] }}
+  smtp_require_tls: {{ alertmanager['smtp_require_tls'] }}
+route:
+    group_by: {{ alertmanager['group_by'] }}
+    group_interval: {{ alertmanager['group_interval'] }}
+    repeat_interval: {{ alertmanager['repeat_interval'] }}
+    group_wait: {{ alertmanager['group_wait'] }}
+    receiver: '{{ alertmanager['receiver'] }}'
+receivers:
+    - name: '{{ alertmanager['name'] }}'
+      email_configs:
+      - to: '{{ alertmanager['to'] }}'
+        from: '{{ alertmanager['from'] }}'
+        require_tls: {{ alertmanager['require_tls'] }}
+        smarthost: {{ alertmanager['smarthost'] }}
+        tls_config:
+          insecure_skip_verify: {{ alertmanager['insecure_skip_verify'] }}
+inhibit_rules:
+  - source_match:
+      severity: '{{ alertmanager['source_match_severity'] }}'
+    target_match:
+      severity: '{{ alertmanager['target_match_severity'] }}'
+    equal: ['{{ alertmanager['equal_alertname'] }}', '{{ alertmanager['equal_dev'] }}', '{{ alertmanager['equal_instance'] }}']

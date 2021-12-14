@@ -1,0 +1,12 @@
+---
+# defaults file for kube_state_metrics
+  kube_state_metrics:
+    kind: Service
+    version: v1
+    namespace: kube-system
+    name: kube-state-nodeport
+    selector: kube-state-metrics
+    protocol: TCP
+    port: 8080
+    nodeport: 30080
+    type: NodePort

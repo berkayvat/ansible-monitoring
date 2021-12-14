@@ -1,0 +1,41 @@
+---
+# tasks file for download_node_exporter
+- name: Create directory /opt/node_exporter
+  file:
+    path: /opt/node_exporter
+    state: directory
+    mode: 0755
+    owner: ubuntu
+    group: ubuntu
+
+- name: Download node_exporter using get_url
+  get_url:
+    url: https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz
+    dest: /opt/node_exporter
+    mode: 0755
+    checksum: sha256:68f3802c2dd3980667e4ba65ea2e1fb03f4a4ba026cca375f15a0390ff850949
+    group: ubuntu
+    owner: ubuntu
+
+- name: Extract tar file
+  command: chdir=/opt/node_exporter tar -xvf node_exporter-1.3.1.linux-amd64.tar.gz
+
+- name: Move the binary
+  command: chdir=/opt/node_exporter/node_exporter-1.3.1.linux-amd64 mv node_exporter /usr/local/bin
+
+- name: Create user
+  command: useradd -rs /bin/false node_exporter
+
+- name: Create a service file
+  template:
+    src: node_exporter.j2
+    dest: /etc/systemd/system/node_exporter.service
+    owner: node_exporter
+    group: node_exporter
+    mode: 0755
+
+- name: Enable service
+  command: systemctl enable node_exporter
+
+- name: Start service
+  command: systemctl start node_exporter

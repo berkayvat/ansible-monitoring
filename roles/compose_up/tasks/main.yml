@@ -1,0 +1,47 @@
+---
+# tasks file for compose_up
+- name: create directory
+  file:
+    path: /opt/confs
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: 0755
+
+- name: copy alertmanager.yml
+  template:
+    src: alertmanager.j2
+    dest: /opt/confs/alertmanager.yml
+    owner: ubuntu
+    group: ubuntu
+    mode: 0755
+
+- name: copy prometheus.yml
+  template:
+    src: prometheus.j2
+    dest: /opt/confs/prometheus.yml
+    owner: ubuntu
+    group: ubuntu
+    mode: 0755
+
+- name: copy compose and alert.rules files
+  copy:
+    src: ./alert.rules.yml
+    dest: /opt/confs
+    owner: ubuntu
+    group: ubuntu
+    mode: 0755
+
+- name: copy docker-compose.yml
+  template:
+    src: docker-compose.j2
+    dest: /opt/docker-compose.yml
+    owner: ubuntu
+    group: ubuntu
+    mode: 0755
+
+- name: composeup
+  docker_compose:
+    project_src: /opt
+    files:
+    - docker-compose.yml

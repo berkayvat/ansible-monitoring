@@ -1,0 +1,43 @@
+global:
+    scrape_interval: {{ prometheus['global_scrape_interval'] }}
+    external_labels:
+        monitor: '{{ prometheus['monitor_name'] }}'
+
+# this is where we have alert rules
+rule_files:
+    - {{ prometheus['rule_file'] }}
+
+scrape_configs:
+    - job_name: '{{ prometheus['job1_name'] }}'
+      scrape_interval: {{ prometheus['job1_scrape_interval'] }}
+      scrape_timeout: {{ prometheus['job1_scrape_timeout'] }}
+      static_configs:
+        - targets:
+          - {{ prometheus['target1'] }}
+          - {{ prometheus['target2'] }}
+          - {{ prometheus['target3'] }}
+          - {{ prometheus['target4'] }}
+          - {{ prometheus['target5'] }}
+          - {{ prometheus['target6'] }}
+          - {{ prometheus['target7'] }}
+
+
+    - job_name: '{{ prometheus['job2_name'] }}'
+      scrape_interval: {{ prometheus['job2_scrape_interval'] }}
+      static_configs:
+        - targets: {{ prometheus['job2_target1'] }}
+
+# Alerting specifies settings related to the Alertmanager
+alerting:
+    alertmanagers:
+        - static_configs:
+          - targets: 
+            - {{ prometheus['alerting_target1'] }}
+remote_write:
+  - url: "{{ prometheus['rw_url'] }}"
+remote_read:
+  - url: "{{ prometheus['rr_url'] }}"
+    read_recent: {{ prometheus['rr_read_recent'] }}
+
+
+

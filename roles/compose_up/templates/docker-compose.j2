@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+    prometheus:
+        image: {{ dockercompose['prometheus_image'] }}
+        privileged: true
+        volumes:
+            - {{ dockercompose['prometheus_volume1'] }}
+            - {{ dockercompose['prometheus_volume2'] }}
+        command:
+            - '{{ dockercompose['prometheus_command1'] }}'
+        ports:
+            - '{{ dockercompose['prometheus_ports'] }}'
+
+    alertmanager:
+        image: {{ dockercompose['alertmanager_image'] }}
+        privileged: true
+        volumes:
+            - {{ dockercompose['alertmanager_volume1'] }}
+        command:
+            - '{{ dockercompose['alertmanager_command1'] }}'
+        ports:
+            - '{{ dockercompose['alertmanager_ports'] }}'
+
+    grafana:
+        image: {{ dockercompose['grafana_image'] }}
+        privileged: true
+        ports:
+            - '{{ dockercompose['grafana_ports'] }}'
+        volumes:
+            - {{ dockercompose['grafana_volume1'] }}
+
+volumes:
+  grafana-storage:

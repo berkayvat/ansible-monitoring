@@ -1,0 +1,28 @@
+---
+# tasks file for kube_state_metrics
+- name: Create a directory /opt/kube-state-metrics
+  file:
+    path: /opt/kube-state-metrics
+    state: directory
+    mode: 0755
+    owner: ubuntu
+    group: ubuntu
+
+- name: Clone repostory
+  git:
+    repo: https://github.com/kubernetes/kube-state-metrics.git
+    dest: /opt/kube-state-metrics
+    clone: yes
+    update: yes
+
+- name: Change directory and version
+  command: chdir=/opt/kube-state-metrics git checkout v1.8.0
+
+- name: Copy kube-state-metrics-nodeport-svc.yml
+  template:
+    src: kube-state-metrics.j2
+    dest: /opt/kube-state-metrics/kube-state-metrics/kube-state-metrics-nodeport-svc.yml
+
+- name: Deploy kube-state-metrics
+  command: chdir=/opt/kube-state-metrics/kube-state-metrics kubectl apply -f kube-state-metrics-nodeport-svc.yml
+

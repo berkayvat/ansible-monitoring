@@ -1,0 +1,12 @@
+---
+# tasks file for download_docker
+- name: Download dokcer and docker-compose
+  apt:
+    name: docker.io
+    state: present
+    update_cache: true
+- name: Download docker-compose
+  apt:
+    name: docker-compose
+    state: present
+    update_cache: true
